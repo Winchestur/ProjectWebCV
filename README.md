@@ -1,164 +1,191 @@
-\# ProjectWebCV  
-
-\### Dynamic CV Web Application (ASP.NET Core MVC + EF Core)
-
-
+# ProjectWebCV  
+### Dynamic CV Web Application (ASP.NET Core MVC + EF Core)
 
 ---
 
+## 🇬🇧 English Description
 
-
-\## 🇬🇧 English Description
-
-
-
-\*\*ProjectWebCV\*\* is a personal CV website built with \*\*ASP.NET Core MVC\*\*, allowing full visual editing of all content, bilingual support, certificate management, project listings and PDF generation using Playwright.
-
-
-
-\### ✨ Features
-
-\- 🌍 Fully bilingual (BG/EN)  
-
-\- 📝 Edit every CV field directly inside the website  
-
-\- 🖼 Certificate management (upload / replace / delete)  
-
-\- 📸 Profile photo upload with auto-cleanup of old files  
-
-\- 💼 Projects section with title, description, links  
-
-\- 📄 PDF export with Playwright (A4 layout, keeps colors \& design)  
-
-\- 🎨 Responsive Bootstrap 5 UI
-
-
-
-\### 🧰 Tech Stack
-
-\- ASP.NET Core MVC 8  
-
-\- Entity Framework Core  
-
-\- SQL Server  
-
-\- Playwright (PDF generation)  
-
-\- Bootstrap 5  
-
-\- HTML5 / CSS3  
-
-
+**ProjectWebCV** is a dynamic, fully editable personal CV website built with **ASP.NET Core MVC**, featuring bilingual content (BG/EN), certificate management, project section, and PDF generation using Playwright.  
+All content—including text fields, skills, experience, projects, images, certificates and profile photo—can be edited directly from an admin interface.
 
 ---
 
-
-
-\## 🇧🇬 Описание на български
-
-
-
-\*\*ProjectWebCV\*\* е персонален уеб сайт за CV, изграден с \*\*ASP.NET Core MVC\*\*, който позволява пълно редактиране на съдържанието, двуезична поддръжка, управление на сертификати, проекти и генериране на PDF, който изглежда като оригиналната страница.
-
-
-
-\### ✨ Функционалности
-
-\- 🌍 Двуезична поддръжка (BG/EN)  
-
-\- 📝 Пълно редактиране на всички секции на CV-то  
-
-\- 🖼 Управление на сертификати (качване / подмяна / изтриване)  
-
-\- 📸 Качване на профилна снимка с автоматично изтриване на старата  
-
-\- 💼 Секция „Проекти“ (заглавия, описания, линкове)  
-
-\- 📄 Генериране на PDF чрез Playwright (A4, запазва цветовете и стила)  
-
-\- 🎨 Модерен responsive интерфейс с Bootstrap 5  
-
-
+## ✨ Features
+- 🌍 Dual language support (Bulgarian / English)  
+- 📝 Edit all CV content visually from the Edit page  
+- 🖼 Certificate management (add, replace, delete) with image preview  
+- 📸 Profile photo upload with automatic cleanup of old files  
+- 💼 Projects section (title, description with bullet support, external links)  
+- 📄 Playwright-based PDF generation (A4, keeps styles and colors)  
+- 🎨 Responsive UI using Bootstrap 5  
+- 🗂 Clean architecture using MVC + EF Core  
+- 🧹 Automatic deletion of unused files (images/certificates)
 
 ---
 
-
-
-\## 📦 Installation \& Run
-
-
-
-1\. Clone the repository  
-
-2\. Configure `appsettings.json` (SQL Server connection string)  
-
-3\. Apply migrations:
-
-&nbsp;  ```bash
-
-&nbsp;  dotnet ef database update
-
-&nbsp;  ```
-
-4\. Run the app:
-
-&nbsp;  ```bash
-
-&nbsp;  dotnet run
-
-&nbsp;  ```
-
-5\. Open:  
-
-&nbsp;  \*\*http://localhost:5000/cv/index\*\*
-
-
+## 🧰 Tech Stack
+- **ASP.NET Core MVC 8**
+- **Entity Framework Core**
+- **SQL Server**
+- **Playwright** (PDF generation)
+- **Bootstrap 5**
+- HTML5 / CSS3 / Razor Views
 
 ---
 
+## 🇧🇬 Описание на български
 
+**ProjectWebCV** е персонален уеб сайт за CV, разработен с **ASP.NET Core MVC**, който позволява пълно редактиране на съдържанието, двуезична поддръжка, управление на сертификати, проекти и генериране на PDF файл с оригиналния дизайн.  
+Всички елементи се управляват удобно през специална страница за редакция.
 
-\## 📂 Project Structure
+---
 
+✨ Функционалности
+- 🌍 Двуезична поддръжка (BG / EN)  
+- 📝 Пълно редактиране на всички секции на CV-то  
+- 🖼 Управление на сертификати (добавяне / подмяна / изтриване)  
+- 📸 Качване на профилна снимка с автоматично изтриване на старата  
+- 💼 Секция „Проекти“ с описание, bullet точки и линкове  
+- 📄 Генериране на PDF чрез Playwright (формат A4)  
+- 🎨 Модерен responsive интерфейс (Bootstrap 5)  
+- 🧹 Автоматично почистване на неизползвани файлове  
 
+---
 
-```
+📦 Installation & Run
+
+1️⃣ Clone repository
+  
+   git clone https://github.com/Winchestur/ProjectWebCV.git
+
+2️⃣ Configure database connection
+*(In appsettings.json update your SQL Server name:)*
+
+   "ConnectionStrings": {
+  "DefaultConnection": "Server=YOUR_SERVER;Database=ProjectWebCV;Trusted_Connection=True;"
+}
+
+*(Replace YOUR_SERVER with your local SQL Server instance.)*
+
+3️⃣ Apply EF Core migrations
+
+   dotnet ef database update
+
+4️⃣ Run the application
+
+   dotnet run
+
+5️⃣ Open the project
+
+   http://localhost:5000/cv/index
+
+---
+
+📂 Project Structure
 
 ProjectWebCV/
+ ├── Controllers/
+ │     └── CvController.cs
+ ├── Models/
+ │     ├── CvModel.cs
+ │     ├── Certificate.cs
+ │     └── Project.cs
+ ├── Views/
+ │     ├── Cv/
+ │     │    ├── Index.cshtml
+ │     │    └── Edit.cshtml
+ ├── Data/
+ │     └── AppDbContext.cs
+ ├── wwwroot/
+ │     ├── images/
+ │     ├── certificates/
+ │     └── css/
+ ├── appsettings.json
+ ├── Program.cs
+ └── README.md
 
-&nbsp;├── Controllers/
+--- 
 
-&nbsp;├── Models/
+🛠️ How to Run Locally (for other developers)
 
-&nbsp;├── Views/
+✔️ Database
 
-&nbsp;├── wwwroot/
+ - Requires SQL Server
 
-&nbsp;│     ├── images/
+ - Automatic migrations supported
 
-&nbsp;│     ├── certificates/
+ - All data stored in SQL using EF Core
 
-&nbsp;│     └── css/
+✔️ Static Files
 
-&nbsp;├── Data/
+(Images are stored in:)
 
-&nbsp;├── appsettings.json
+wwwroot/images/
+wwwroot/certificates/
 
-&nbsp;├── Program.cs
-
-&nbsp;└── README.md
-
-```
-
-
+(They are deleted and replaced automatically when updating.)
 
 ---
 
+🧪 How PDF Generation Works (Playwright)
 
+This project uses Microsoft.Playwright to generate a PDF from the live CV page.
 
-\## 📄 License
+How it works:
+
+1️⃣ Opens /Cv/Index?lang=bg/en in a headless Chromium browser
+
+2️⃣ Applies @media print CSS (hides footer, buttons, icons)
+
+3️⃣ Renders into a perfect A4 PDF
+
+4️⃣ Keeps full colors & curves of the header
+
+5️⃣ Fits everything on a single page
+
+var pdf = await page.PdfAsync(new() {
+    Format = "A4",
+    PrintBackground = true
+});
+
+---
+
+🏗️ How Certificates Work
+
+ - Each certificate has:
+
+   1. BG title
+   2. EN title
+   3. optional image
+
+ - Images stored in /wwwroot/certificates/
+
+ - Old image is deleted when replaced
+
+ - Certificates can be previewed in pop-up (modal)
+
+ - Certificates are hidden in the PDF (print CSS)
+
+---
+
+🧱 How Projects Work
+
+The CV supports a Projects section with:
+
+ - Title BG / Title EN
+
+ - Description BG / EN
+
+ - Multiple links (one per line)
+
+ - Dynamic bullet parsing
+   1.Lines starting with - → shown as plain rows
+   2.Other lines → bullet list
+
+(All projects are automatically formatted in PDF and on the site.)
+
+---
+
+📄 License
 
 MIT License
-
-
-
