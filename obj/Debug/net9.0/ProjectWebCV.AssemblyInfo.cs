@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProjectWebCV")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+40c8949fc9cb7274110de43739b43d54c1c217da")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ca0355cdcde3624d19347aa0b32d1ca65ad9a3a0")]
 [assembly: System.Reflection.AssemblyProductAttribute("ProjectWebCV")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ProjectWebCV")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

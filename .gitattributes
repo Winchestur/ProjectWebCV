@@ -1,2 +1,15 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+# Ignore external libraries from language statistics
+wwwroot/lib/* linguist-vendored
+wwwroot/js/* linguist-vendored
+wwwroot/css/* linguist-vendored
+
+# Ignore Playwright (big JS files)
+bin/* linguist-vendored
+obj/* linguist-vendored
+
+# Razor views counted as C#
+*.cshtml linguist-detectable=true
+*.razor linguist-detectable=true
+
