@@ -1,0 +1,314 @@
+﻿@using ProjectWebCV.Models
+@model ProjectWebCV.Models.CvModel
+
+@{
+    Layout = null;
+
+    // Проверяваме кой език да се визуализира — BG или EN
+    bool isEnglish = Model.Language == "en";
+
+    // Зареждаме всички сертификати от ViewBag
+    var certs = ViewBag.Certificates as List<Certificate> ?? new List<Certificate>();
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@Model.FullName - CV</title>
+
+    <!-- Bootstrap стилове -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons (икони за телефон, местоположение и т.н.) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/favicon.jpg">
+
+    <!-- Собствен CSS -->
+    <link href="~/css/site.css" rel="stylesheet" asp-append-version="true">
+
+    <!-- FontAwesome (икона за PDF бутона) -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+          crossorigin="anonymous" />
+</head>
+<body>
+
+    <!-- ========================= HEADER ========================= -->
+    <!-- Съдържа снимка + контакти + социални мрежи + име -->
+    <div class="header d-flex flex-column align-items-center">
+
+        <!-- Ляво → контакти | Център → снимка | Дясно → социални мрежи -->
+        <div class="d-flex justify-content-center align-items-center gap-5 w-100 mt-3">
+
+            <!-- ЛЕВИ КОНТАКТИ -->
+            <div class="contact-left-column text-white d-flex flex-column align-items-end gap-2">
+                <span><i class="bi bi-geo-alt"></i> @Model.City, @Model.Country</span>
+                <span><i class="bi bi-envelope"></i> @Model.Email</span>
+                <span><i class="bi bi-telephone"></i> @Model.Phone</span>
+            </div>
+
+            <!-- СНИМКА -->
+            <div class="contact-photo text-center">
+                @if (!string.IsNullOrEmpty(Model.PhotoPath))
+                {
+                    <img src="@Model.PhotoPath" class="profile-img" alt="Снимка" />
+                }
+            </div>
+
+            <!-- ДЕСНИ СОЦИАЛНИ ИКОНИ -->
+            <div class="contact-right-column d-flex flex-column align-items-start gap-3">
+                @if (!string.IsNullOrEmpty(Model.FacebookUrl))
+                {
+                    <a href="@Model.FacebookUrl" target="_blank">
+                        <i class="bi bi-facebook fs-3 contact-icon" style="color:#1877F2;"></i>
+                    </a>
+                }
+                @if (!string.IsNullOrEmpty(Model.InstagramUrl))
+                {
+                    <a href="@Model.InstagramUrl" target="_blank">
+                        <i class="bi bi-instagram fs-3 contact-icon" style="
+                            color: transparent;
+                            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%,
+                            #fd5949 45%, #d6249f 60%, #285AEB 90%);
+                            -webkit-background-clip: text;
+                            background-clip: text;"></i>
+                    </a>
+                }
+            </div>
+        </div>
+
+        <!-- ИМЕТО (BG/EN) -->
+        @{
+            // Разделяме първо и последно име за по-добра визия
+            var fullName = isEnglish ? Model.FullNameEn : Model.FullName;
+            var firstName = fullName?.Split(' ').FirstOrDefault() ?? "";
+            var lastName = fullName?.Split(' ').Skip(1).FirstOrDefault() ?? "";
+        }
+
+        <h1 class="mt-3 text-white">
+            <span style="color: white; font-weight: bold;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">
+                @firstName @lastName
+            </span>
+        </h1>
+    </div>
+
+
+    <!-- ========================= BODY ========================= -->
+    <div class="container mt-5">
+
+        <!-- OBJECTIVE / SUMMARY -->
+        <h4 class="text-center section-title">@((isEnglish ? "OBJECTIVE" : "РЕЗЮМЕ"))</h4>
+        <p class="text-center">@((isEnglish ? Model.SummaryEn : Model.SummaryBg))</p>
+
+        <div class="row two-column">
+
+            <!-- ============= ЛЯВА КОЛОНА ============= -->
+            <div class="col-md-6">
+
+                <!-- УМЕНИЯ -->
+                <h5 class="section-title">@((isEnglish ? "SKILLS" : "УМЕНИЯ"))</h5>
+                <ul>
+                    @foreach (var skill in (isEnglish ? Model.SkillsEn : Model.SkillsBg)?.Split('\n') ?? new[] { "..." })
+                    {
+                        <li>@skill</li>
+                    }
+                </ul>
+
+                <!-- ЕЗИЦИ -->
+                <h5 class="section-title">@((isEnglish ? "LANGUAGES" : "ЕЗИЦИ"))</h5>
+                <ul>
+                    @foreach (var language in (isEnglish ? Model.StudiedLanguagesEn : Model.StudiedLanguagesBg)?.Split('\n') ?? new[] { "..." })
+                    {
+                        <li>@language</li>
+                    }
+                </ul>
+
+                <!-- ОПИТ -->
+                <h5 class="section-title">@((isEnglish ? "EXPERIENCE" : "ОПИТ"))</h5>
+                <ul>
+                    @foreach (var experience in (isEnglish ? Model.ExperienceEn : Model.ExperienceBg)?.Split('\n') ?? new[] { "..." })
+                    {
+                        <li>@experience</li>
+                    }
+                </ul>
+
+                <!-- ИНТЕРЕСИ -->
+                <h5 class="section-title">@((isEnglish ? "INTERESTS" : "ИНТЕРЕСИ"))</h5>
+                <ul>
+                    @foreach (var interest in (isEnglish ? Model.InterestsEn : Model.InterestsBg)?.Split('\n') ?? new[] { "..." })
+                    {
+                        <li>@interest</li>
+                    }
+                </ul>
+            </div>
+
+
+            <!-- ============= ДЯСНА КОЛОНА ============= -->
+            <div class="col-md-6">
+
+                <!-- ОБРАЗОВАНИЕ -->
+                <h5 class="section-title">@((isEnglish ? "EDUCATION" : "ОБРАЗОВАНИЕ"))</h5>
+                <ul>
+                    @foreach (var edu in (isEnglish ? Model.EducationEn : Model.EducationBg)?.Split('\n') ?? new[] { "..." })
+                    {
+                        <li>@edu</li>
+                    }
+                </ul>
+
+                <!-- ПРОЕКТИ -->
+                <h5 class="section-title">@((isEnglish ? "PROJECTS" : "ПРОЕКТИ"))</h5>
+
+                @{
+                    var projects = ViewBag.Projects as List<Project> ?? new List<Project>();
+                }
+
+                @if (projects.Count == 0)
+                {
+                    <p class="text-muted">@((isEnglish ? "No projects added yet." : "Няма добавени проекти."))</p>
+                }
+                else
+                {
+                    foreach (var p in projects)
+                    {
+                        <div class="mb-3">
+
+                            <!-- Заглавие -->
+                            <p class="mb-1">
+                                <strong>@(isEnglish ? p.TitleEn : p.TitleBg)</strong>
+                            </p>
+
+                            <!-- Описание с автоматично премахване на bullet при '-' -->
+                            <ul>
+                                @foreach (var line in ((isEnglish ? p.DescriptionEn : p.DescriptionBg) ?? "")
+                               .Split('\n')
+                               .Select(l => l.Trim())
+                               .Where(l => !string.IsNullOrWhiteSpace(l)))
+                                {
+                                    if (line.StartsWith("-"))
+                                    {
+                                        var clean = line.Trim();
+                                        <div>@clean</div>
+                                    }
+                                    else
+                                    {
+                                        <li>@line</li>
+                                    }
+                                }
+                            </ul>
+
+                            <!-- Линкове -->
+                            @if (!string.IsNullOrEmpty(p.Links))
+                            {
+                                <ul>
+                                    @foreach (var link in p.Links
+                                   .Split('\n', StringSplitOptions.RemoveEmptyEntries))
+                                    {
+                                        <li>
+                                            <a href="@link" target="_blank">@link</a>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                        </div>
+                    }
+                }
+
+
+
+                <!-- СЕРТИФИКАТИ (скрити в PDF) -->
+                <h5 class="section-title no-print">@((isEnglish ? "CERTIFICATES" : "СЕРТИФИКАТИ"))</h5>
+
+                <ul class="list-unstyled no-print">
+                    @foreach (var cert in certs)
+                    {
+                        var modalId = $"certModal_{cert.Id}";
+
+                        <li class="mb-3 d-flex align-items-start gap-3">
+
+                            <!-- Текст -->
+                            <div class="flex-grow-1">
+                                <p class="multiline-text mb-0">
+                                    @(isEnglish ? cert.TitleEn : cert.TitleBg)
+                                </p>
+                            </div>
+
+                            <!-- Мини снимка (thumbnail) -->
+                            @if (!string.IsNullOrEmpty(cert.ImagePath))
+                            {
+                                <img src="@cert.ImagePath"
+                                     class="img-thumbnail"
+                                     style="width: 30px; height: 30px; object-fit: cover; cursor: pointer;"
+                                     data-bs-toggle="modal"
+                                     data-bs-target="#@modalId" />
+                            }
+                        </li>
+
+                        <!-- Модал за отваряне на сертификата -->
+                        @if (!string.IsNullOrEmpty(cert.ImagePath))
+                        {
+                            <div class="modal fade" id="@modalId" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-body text-center">
+                                            <img src="@cert.ImagePath" class="img-fluid" />
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                @((isEnglish ? "Close" : "Затвори"))
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ====================== FOOTER (скрит в PDF) ====================== -->
+    <div class="mt-4 text-center no-print">
+        <a class="custom-btn me-2" href="/Cv/Edit">✏️ @(isEnglish ? "Edit" : "Редактирай")</a>
+
+        <a class="custom-btn me-2"
+           href="@Url.Action("DownloadPdf", "Cv", new { lang = Model.Language })">
+            <i class="fa-solid fa-file-pdf" style="color: #b71c1c"></i>
+            @(isEnglish ? "Download PDF" : "Свали PDF")
+        </a>
+    </div>
+
+    <div class="footer no-print text-center text-white d-flex align-items-center justify-content-center flex-column">
+        <small>&copy; @(isEnglish ? "All rights reserved!" : "Всички права запазени!")</small>
+        <div class="datetime-box mt-2"><span id="datetime"></span></div>
+    </div>
+
+
+    <!-- Езикови бутони (BG/EN) -->
+    <div class="text-end p-3 no-print">
+        <a href="/Cv/Index?lang=bg" class="btn btn-sm btn-outline-dark me-2">🇧🇬 BG</a>
+        <a href="/Cv/Index?lang=en" class="btn btn-sm btn-outline-dark">🇬🇧 EN</a>
+    </div>
+
+
+    <!-- Часовник във футъра -->
+    <script>
+        function updateDateTime() {
+            const now = new Date();
+            document.getElementById('datetime').textContent =
+                now.toLocaleDateString('bg-BG') + " – " + now.toLocaleTimeString('bg-BG');
+        }
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

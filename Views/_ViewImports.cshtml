@@ -1,0 +1,6 @@
+﻿@using ProjectWebCV           // Дава достъп до основния namespace
+@using ProjectWebCV.Models    // Позволява ползване на моделите без допълнителни using-и
+
+// Активира Razor Tag Helpers (asp-for, asp-action, asp-controller и др.)
+// Без това формите и bind-ването на model properties няма да работят.
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers

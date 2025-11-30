@@ -1,0 +1,241 @@
+﻿@using ProjectWebCV.Models
+@model ProjectWebCV.Models.CvModel
+
+@{
+    ViewData["Title"] = "Edit CV";
+    Layout = "_Layout";
+}
+
+@{
+    // Зареждаме сертификатите, изпратени от контролера чрез ViewBag.
+    // Ако няма — създаваме празен списък, за да не хвърля грешка.
+    var certs = ViewBag.Certificates as List<Certificate> ?? new List<Certificate>();
+}
+
+<div class="card shadow p-4 mt-4">
+    <h2 class="mb-4">Редакция на CV</h2>
+
+    <!--
+        Основна форма за редакция на CV.
+        enctype="multipart/form-data" е задължително, защото качваме снимки.
+    -->
+    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+        <!-- Hidden поле за ID на CV-то -->
+        <input type="hidden" asp-for="Id" />
+
+        <div class="row">
+
+            <!-- ==================== Лява колона ==================== -->
+            <div class="col-md-6">
+
+                <!-- Име BG/EN -->
+                <div class="mb-3">
+                    <label asp-for="FullName" class="form-label">Име и фамилия</label>
+                    <input asp-for="FullName" class="form-control" />
+
+                    <label asp-for="FullNameEn" class="form-label">FullName</label>
+                    <input asp-for="FullNameEn" class="form-control" />
+                </div>
+
+                <!-- Основни контакти -->
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label">Имейл</label>
+                    <input asp-for="Email" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Phone" class="form-label">Телефон</label>
+                    <input asp-for="Phone" class="form-control" />
+                </div>
+
+                <!-- Локация -->
+                <div class="mb-3">
+                    <label asp-for="City" class="form-label">Град</label>
+                    <input asp-for="City" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Country" class="form-label">Държава</label>
+                    <input asp-for="Country" class="form-control" />
+                </div>
+
+                <!-- Социални мрежи -->
+                <div class="mb-3">
+                    <label asp-for="FacebookUrl" class="form-label">Facebook линк</label>
+                    <input asp-for="FacebookUrl" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="InstagramUrl" class="form-label">Instagram линк</label>
+                    <input asp-for="InstagramUrl" class="form-control" />
+                </div>
+
+                <!-- Качване на снимка -->
+                <div class="mb-3">
+                    <label class="form-label">Снимка на профил</label>
+                    <input type="file" name="photo" class="form-control" />
+                </div>
+            </div>
+
+
+            <!-- ==================== Дясна колона ==================== -->
+            <div class="col-md-6">
+
+                <!-- SUMMARY (BG/EN) -->
+                <h5 class="text-primary">Резюме</h5>
+                <textarea asp-for="SummaryBg" class="form-control mb-2" rows="3"></textarea>
+                <textarea asp-for="SummaryEn" class="form-control mb-3" rows="3"></textarea>
+
+                <!-- SKILLS -->
+                <h5 class="text-primary">Умения</h5>
+                <textarea asp-for="SkillsBg" class="form-control mb-2" rows="3"></textarea>
+                <textarea asp-for="SkillsEn" class="form-control mb-3" rows="3"></textarea>
+
+                <!-- EXPERIENCE -->
+                <h5 class="text-primary">Опит</h5>
+                <textarea asp-for="ExperienceBg" class="form-control mb-2" rows="4"></textarea>
+                <textarea asp-for="ExperienceEn" class="form-control mb-3" rows="4"></textarea>
+
+                <!-- EDUCATION -->
+                <h5 class="text-primary">Образование</h5>
+                <textarea asp-for="EducationBg" class="form-control mb-2" rows="6"></textarea>
+                <textarea asp-for="EducationEn" class="form-control mb-4" rows="6"></textarea>
+
+                <!-- LANGUAGES -->
+                <h5 class="text-primary">Езици</h5>
+                <textarea asp-for="StudiedLanguagesBg" class="form-control mb-2" rows="6"></textarea>
+                <textarea asp-for="StudiedLanguagesEn" class="form-control mb-4" rows="6"></textarea>
+
+                <!-- INTERESTS -->
+                <h5 class="text-primary">Интереси</h5>
+                <textarea asp-for="InterestsBg" class="form-control mb-2" rows="6"></textarea>
+                <textarea asp-for="InterestsEn" class="form-control mb-4" rows="6"></textarea>
+
+                <!-- ==================== Сертификати ==================== -->
+                <h5 class="text-primary mt-4">Сертификати</h5>
+
+                @for (int i = 0; i < certs.Count; i++)
+                {
+                    <!--
+                        Всеки сертификат е отделен блок.
+                        По ID разбираме дали е стар или нов запис.
+                    -->
+                    <div class="border rounded p-3 mb-3">
+
+                        <input type="hidden" name="certIds[@i]" value="@certs[i].Id" />
+
+                        <!-- Текст BG/EN -->
+                        <label>Текст (BG)</label>
+                        <textarea name="certTitlesBg[@i]" class="form-control mb-2">@certs[i].TitleBg</textarea>
+
+                        <label>Text (EN)</label>
+                        <textarea name="certTitlesEn[@i]" class="form-control mb-2">@certs[i].TitleEn</textarea>
+
+                        @if (!string.IsNullOrEmpty(certs[i].ImagePath))
+                        {
+                            <!-- Преглед на снимка -->
+                            <img src="@certs[i].ImagePath" class="img-thumbnail mb-2"
+                                 style="width:90px;height:90px;object-fit:cover;" />
+
+                            <!-- Чекбокс за изтриване -->
+                            <div class="form-check mb-2">
+                                <input type="checkbox" class="form-check-input"
+                                       name="deleteCertImage[@i]" value="true" />
+                                <label class="form-check-label">Премахни снимката</label>
+                            </div>
+
+                            <!-- Качване на нова снимка върху старата -->
+                            <input type="file" name="certImages[@i]" class="form-control" />
+                        }
+                        else
+                        {
+                            <!-- Качване на снимка, ако няма стара -->
+                            <label>Снимка</label>
+                            <input type="file" name="certImages[@i]" class="form-control" />
+                        }
+                    </div>
+                }
+
+                <!-- ==================== Нов сертификат ==================== -->
+                <div class="border rounded p-3 mb-3">
+
+                    <!-- ID=0 означава нов сертификат -->
+                    <input type="hidden" name="certIds[@certs.Count]" value="0" />
+
+                    <label>Нов сертификат – Текст (BG)</label>
+                    <textarea name="certTitlesBg[@certs.Count]" class="form-control mb-2"></textarea>
+
+                    <label>New certificate – Text (EN)</label>
+                    <textarea name="certTitlesEn[@certs.Count]" class="form-control mb-2"></textarea>
+
+                    <label>Снимка</label>
+                    <input type="file" name="certImages[@certs.Count]" class="form-control" />
+
+                </div>
+
+                <!-- ==================== ПРОЕКТИ ==================== -->
+                <h4 class="mt-4">Проекти / Projects</h4>
+
+                @{
+                    var projects = ViewBag.Projects as List<Project> ?? new List<Project>();
+                }
+
+                <!-- Съществуващи проекти -->
+                @for (int i = 0; i < projects.Count; i++)
+                {
+                    <div class="border rounded p-3 mb-3">
+
+                        <!-- ID на проекта -->
+                        <input type="hidden" name="projectIds[@i]" value="@projects[i].Id" />
+
+                        <label>Заглавие (BG)</label>
+                        <input type="text" name="projectTitlesBg[@i]" class="form-control mb-2"
+                               value="@projects[i].TitleBg" />
+
+                        <label>Title (EN)</label>
+                        <input type="text" name="projectTitlesEn[@i]" class="form-control mb-2"
+                               value="@projects[i].TitleEn" />
+
+                        <label>Описание (BG)</label>
+                        <textarea name="projectDescriptionsBg[@i]" class="form-control mb-2" rows="3">@projects[i].DescriptionBg</textarea>
+
+                        <label>Description (EN)</label>
+                        <textarea name="projectDescriptionsEn[@i]" class="form-control mb-2" rows="3">@projects[i].DescriptionEn</textarea>
+
+                        <label>Линкове (по един на ред)</label>
+                        <textarea name="projectLinks[@i]" class="form-control" rows="2">@projects[i].Links</textarea>
+
+                    </div>
+                }
+
+                <!-- ==================== Нов проект ==================== -->
+                <div class="border rounded p-3 mb-3">
+
+                    <input type="hidden" name="projectIds[@projects.Count]" value="0" />
+
+                    <label>Нов проект – Заглавие (BG)</label>
+                    <input type="text" name="projectTitlesBg[@projects.Count]" class="form-control mb-2" />
+
+                    <label>New project – Title (EN)</label>
+                    <input type="text" name="projectTitlesEn[@projects.Count]" class="form-control mb-2" />
+
+                    <label>Описание (BG)</label>
+                    <textarea name="projectDescriptionsBg[@projects.Count]" class="form-control mb-2" rows="3"></textarea>
+
+                    <label>Description (EN)</label>
+                    <textarea name="projectDescriptionsEn[@projects.Count]" class="form-control mb-2" rows="3"></textarea>
+
+                    <label>Линкове (по един на ред)</label>
+                    <textarea name="projectLinks[@projects.Count]" class="form-control" rows="2"></textarea>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Save + Back buttons -->
+        <button class="btn btn-success mt-3">💾 Запази</button>
+        <a asp-action="Index" class="btn btn-secondary mt-3 ms-2">⬅ Назад</a>
+
+    </form>
+</div>
